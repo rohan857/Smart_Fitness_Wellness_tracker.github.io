@@ -47,7 +47,7 @@ button:focus-visible, input:focus-visible, select:focus-visible {
   justify-items: center;
   gap: 10px;
   padding: 0;
-  background: linear-gradient(to bottom, #0a0b0d 0%, #0a0b0d 50%, #020202 50%, #020202 100%);
+  background: #000000;
   opacity: 1;
   visibility: visible;
   transition: opacity .42s ease, visibility .42s ease;
