@@ -47,7 +47,7 @@ button:focus-visible, input:focus-visible, select:focus-visible {
   justify-items: center;
   gap: 10px;
   padding: 0;
-  background: #000;
+  background: linear-gradient(to bottom, #0a0b0d 0%, #0a0b0d 50%, #020202 50%, #020202 100%);
   opacity: 1;
   visibility: visible;
   transition: opacity .42s ease, visibility .42s ease;
@@ -55,13 +55,14 @@ button:focus-visible, input:focus-visible, select:focus-visible {
 .splash.is-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
 .splash picture {
   display: block;
-  width: min(76vw, 780px);
+  width: 100vw;
   max-width: 100vw;
 }
 .splash img {
   display: block;
   width: 100%;
-  max-height: 72dvh;
+  height: auto;
+  max-height: none;
   object-fit: contain;
   animation: logo-in .65s ease-out both;
 }
@@ -428,13 +429,13 @@ button:disabled { cursor: not-allowed; opacity: .48; transform: none !important;
   .session-list li { align-items: flex-start; flex-direction: column; gap: 3px; }
   .splash { gap: 14px; }
   .splash picture { width: 100vw; max-width: 100vw; }
-  .splash img { width: 100%; max-height: 64dvh; object-fit: contain; }
+  .splash img { width: 100%; height: auto; max-height: none; object-fit: contain; }
 }
 
 @media (orientation: landscape) and (max-height: 540px) {
   .splash { grid-template-columns: auto; }
-  .splash picture { width: min(78vw, 760px); }
-  .splash img { width: 100%; height: auto; max-height: 74dvh; }
+  .splash picture { width: 100vw; }
+  .splash img { width: 100%; height: auto; max-height: none; }
   .splash p { font-size: 10px; }
   .app-shell { padding-top: 22px; }
 }
