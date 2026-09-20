@@ -11,10 +11,9 @@
 <body>
   <div class="splash" id="splash" aria-label="AR Cube loading screen">
     <picture>
-      <source media="(max-width: 620px)" srcset="assets/ARCUBE.png">
-      <img src="assets/AR.png" alt="AR Cube logo">
+      <source media="(max-width: 620px)" srcset="assets/JM.png">
+      <img src="assets/J.png" alt="Janken Corporations">
     </picture>
-    <p>Daily Activity Tracker</p>
   </div>
 
   <main class="app-shell">
@@ -146,6 +145,7 @@
         <article class="metric-card compact"><div class="card-label"><span>Blood pressure</span><span class="metric-icon blue">B</span></div><strong><span data-wellness="bloodPressure">—/—</span> <small>mmHg</small></strong><span class="reading-good">Manual reading</span></article>
         <article class="metric-card compact"><div class="card-label"><span>Blood oxygen</span><span class="metric-icon water">O</span></div><strong><span data-wellness="spo2">—</span> <small>% SpO₂</small></strong><span class="reading-good">From an oximeter or watch</span></article>
         <article class="metric-card compact"><div class="card-label"><span>Temperature</span><span class="metric-icon orange">T</span></div><strong><span data-wellness="temperature">—</span> <small>°C</small></strong><span class="reading-good">Manual reading</span></article>
+        <article class="metric-card compact"><div class="card-label"><span>Sleep</span><span class="metric-icon navy">S</span></div><strong><span data-wellness="sleep">—</span> <small>hours</small></strong><span class="reading-good">Manual daily entry</span></article>
       </div>
 
       <div class="wellness-layout">
@@ -156,13 +156,14 @@
             <label>Blood pressure <span>(mmHg)</span><input name="bloodPressure" type="text" inputmode="numeric" pattern="[0-9]{2,3}/[0-9]{2,3}" placeholder="118/76" required></label>
             <label>SpO₂ <span>(%)</span><input name="spo2" type="number" min="50" max="100" step="1" placeholder="98" required></label>
             <label>Temperature <span>(°C)</span><input name="temperature" type="number" min="30" max="45" step="0.1" placeholder="36.6" required></label>
+            <label>Sleep <span>(hours)</span><input name="sleep" type="number" min="0" max="24" step="0.1" placeholder="7.5" required></label>
           </div>
           <button class="secondary-button" type="submit">Save wellness readings</button>
           <p class="form-message" id="wellness-message" aria-live="polite"></p>
         </form>
         <aside class="wellness-note">
           <span class="tip-icon" aria-hidden="true">i</span>
-          <div><strong>Why these are manual</strong><p>Phone motion sensors can estimate movement, but they cannot measure blood oxygen, blood pressure, heart rate, or body temperature.</p></div>
+          <div><strong>Why these are manual</strong><p>Phone motion sensors can estimate movement, but they cannot measure these health readings. Enter sleep from a watch or your own daily record.</p></div>
         </aside>
       </div>
       <p class="health-note">This dashboard is for personal tracking only and does not provide medical diagnosis.</p>
@@ -205,6 +206,7 @@
           <span>Blood pressure<strong><span data-wellness="bloodPressure">—/—</span> mmHg</strong></span>
           <span>SpO₂<strong><span data-wellness="spo2">—</span>%</strong></span>
           <span>Temperature<strong><span data-wellness="temperature">—</span> °C</strong></span>
+          <span>Sleep<strong><span data-wellness="sleep">—</span> hours</strong></span>
         </div>
       </section>
 
@@ -232,14 +234,22 @@
       steps: 0,
       activeSeconds: 0,
       sessions: [],
-      wellness: { heartRate: "—", bloodPressure: "—/—", spo2: "—", temperature: "—", updatedAt: null },
+      wellness: { heartRate: "—", bloodPressure: "—/—", spo2: "—", temperature: "—", sleep: "—", updatedAt: null },
       settings: { weight: 70, stride: 75, stepGoal: 10000, sensitivity: 1.25, ...settings }
     });
 
     function loadState() {
       try {
         const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
-        if (saved?.date === localDateKey()) return { ...freshState(saved.settings), ...saved };
+        if (saved?.date === localDateKey()) {
+          const base = freshState(saved.settings);
+          return {
+            ...base,
+            ...saved,
+            settings: { ...base.settings, ...saved.settings },
+            wellness: { ...base.wellness, ...saved.wellness }
+          };
+        }
         return freshState(saved?.settings);
       } catch {
         return freshState();
@@ -466,6 +476,7 @@
         bloodPressure: String(data.get("bloodPressure")).trim(),
         spo2: String(data.get("spo2")),
         temperature: String(data.get("temperature")),
+        sleep: String(data.get("sleep")),
         updatedAt: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
       };
       saveState();

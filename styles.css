@@ -375,7 +375,7 @@ button:disabled { cursor: not-allowed; opacity: .48; transform: none !important;
 .wellness-note strong { color: var(--ink); }
 .wellness-note p { margin: 5px 0 0; }
 .wellness-snapshot { margin-bottom: 16px; box-shadow: none; }
-.snapshot-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.snapshot-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
 .snapshot-grid > span { color: var(--muted); font-size: 11px; font-weight: 750; }
 .snapshot-grid strong { display: block; margin-top: 5px; color: var(--ink); font-size: 15px; }
 .site-footer {
