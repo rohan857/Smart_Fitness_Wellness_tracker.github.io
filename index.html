@@ -1,0 +1,509 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f7fbfc">
+  <title>AR Move — Daily Activity Tracker</title>
+  <link rel="icon" href="assets/AR.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="splash" id="splash" aria-label="AR Cube loading screen">
+    <picture>
+      <source media="(max-width: 620px)" srcset="assets/ARCUBE.png">
+      <img src="assets/AR.png" alt="AR Cube logo">
+    </picture>
+    <p>Daily Activity Tracker</p>
+  </div>
+
+  <main class="app-shell">
+    <header class="topbar">
+      <div class="brand-copy">
+        <p class="eyebrow">AR CUBE / MOVE</p>
+        <h1>Daily Activity Tracker</h1>
+        <p class="date-line" id="date-line"></p>
+      </div>
+      <div class="status-pill" id="day-status"><span class="status-dot"></span><span>Ready to move</span></div>
+    </header>
+
+    <nav class="tabs" aria-label="Tracker sections" role="tablist">
+      <button class="tab is-active" id="activity-tab" data-tab="activity" type="button" role="tab" aria-selected="true" aria-controls="activity">Activity</button>
+      <button class="tab" id="tracker-tab" data-tab="tracker" type="button" role="tab" aria-selected="false" aria-controls="tracker">Tracker</button>
+      <button class="tab" id="wellness-tab" data-tab="wellness" type="button" role="tab" aria-selected="false" aria-controls="wellness">Wellness</button>
+      <button class="tab" id="today-tab" data-tab="today" type="button" role="tab" aria-selected="false" aria-controls="today">Today</button>
+    </nav>
+
+    <section class="view is-active" id="activity" role="tabpanel" aria-labelledby="activity-tab">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">LIVE DAILY TOTALS</p>
+          <h2>Your activity</h2>
+          <p>Movement detected by this phone while the tracker is running.</p>
+        </div>
+        <span class="date-badge">Resets daily</span>
+      </div>
+
+      <div class="metric-grid fitness-grid">
+        <article class="metric-card">
+          <div class="card-label"><span>Estimated steps</span><span class="metric-icon water">S</span></div>
+          <strong><span data-output="steps">0</span></strong>
+          <div class="progress"><span data-progress="steps"></span></div>
+          <div class="card-meta"><span data-output="stepPercent">0% complete</span><span data-output="stepGoal">Goal 10,000</span></div>
+        </article>
+        <article class="metric-card">
+          <div class="card-label"><span>Distance</span><span class="metric-icon blue">D</span></div>
+          <strong><span data-output="distance">0.00</span> <small>km</small></strong>
+          <span class="reading-good">Based on stride length</span>
+        </article>
+        <article class="metric-card">
+          <div class="card-label"><span>Calories</span><span class="metric-icon coral">K</span></div>
+          <strong><span data-output="calories">0.0</span> <small>kcal</small></strong>
+          <span class="reading-good">Estimated from weight and distance</span>
+        </article>
+        <article class="metric-card">
+          <div class="card-label"><span>Active time</span><span class="metric-icon green">A</span></div>
+          <strong><span data-output="activeMinutes">0.0</span> <small>min</small></strong>
+          <span class="reading-good">Time with detected movement</span>
+        </article>
+      </div>
+
+      <div class="tip-strip">
+        <span class="tip-icon" aria-hidden="true">i</span>
+        <p><strong>Phone placement matters</strong><br>Keep the phone in a pocket or hand while walking for better estimates.</p>
+        <button class="text-button" data-open-tracker type="button">Open tracker</button>
+      </div>
+    </section>
+
+    <section class="view" id="tracker" role="tabpanel" aria-labelledby="tracker-tab" hidden>
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">MOTION SENSOR</p>
+          <h2>Movement tracker</h2>
+          <p>Tap Start, allow motion access, and keep this page visible.</p>
+        </div>
+        <span class="updated-label tracker-state" id="tracker-state"><span class="tracker-dot"></span>Stopped</span>
+      </div>
+
+      <div class="tracker-layout">
+        <section class="panel tracker-panel">
+          <div class="plain-counter">
+            <span>Estimated steps today</span>
+            <strong data-output="steps">0</strong>
+            <small>Keep this page open while walking</small>
+          </div>
+
+          <div class="signal-block">
+            <div class="signal-label"><span>Movement signal</span><span id="signal-value">0.00</span></div>
+            <div class="signal-track"><span id="motion-signal"></span></div>
+          </div>
+
+          <div class="tracker-actions">
+            <button class="primary-button" id="start-tracking" type="button">Start tracking</button>
+            <button class="outline-button" id="stop-tracking" type="button" disabled>Stop</button>
+          </div>
+          <p class="tracker-message" id="tracker-message" aria-live="polite">Motion access starts only after you press the button.</p>
+        </section>
+
+        <form class="panel settings-panel" id="settings-form">
+          <div class="panel-heading">
+            <div><p class="section-kicker">ESTIMATE SETTINGS</p><h3>Your details</h3></div>
+          </div>
+          <div class="settings-grid">
+            <label>Body weight <span>(kg)</span><input name="weight" type="number" min="25" max="250" step="0.1" required></label>
+            <label>Stride length <span>(cm)</span><input name="stride" type="number" min="30" max="150" step="1" required></label>
+            <label>Daily step goal<input name="stepGoal" type="number" min="100" max="100000" step="100" required></label>
+            <label>Sensitivity
+              <select name="sensitivity">
+                <option value="1.05">High</option>
+                <option value="1.25">Balanced</option>
+                <option value="1.50">Low</option>
+              </select>
+            </label>
+          </div>
+          <button class="secondary-button" type="submit">Save settings</button>
+          <p class="settings-note">Higher sensitivity detects lighter movement but may count more false steps. Your details stay on this device.</p>
+        </form>
+      </div>
+
+      <div class="browser-note">
+        <strong>Browser limitation:</strong> tracking pauses if this page is hidden, the browser is closed, or the screen is locked. Results are estimates, not medical or fitness-device measurements.
+      </div>
+    </section>
+
+    <section class="view" id="wellness" role="tabpanel" aria-labelledby="wellness-tab" hidden>
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">MANUAL HEALTH CHECK-IN</p>
+          <h2>Wellness</h2>
+          <p>Record readings from a watch, oximeter, thermometer, or blood-pressure monitor.</p>
+        </div>
+        <span class="updated-label" id="wellness-updated">Not checked today</span>
+      </div>
+
+      <div class="metric-grid wellness-grid">
+        <article class="metric-card compact"><div class="card-label"><span>Heart rate</span><span class="metric-icon coral">H</span></div><strong><span data-wellness="heartRate">—</span> <small>bpm</small></strong><span class="reading-good">Manual reading</span></article>
+        <article class="metric-card compact"><div class="card-label"><span>Blood pressure</span><span class="metric-icon blue">B</span></div><strong><span data-wellness="bloodPressure">—/—</span> <small>mmHg</small></strong><span class="reading-good">Manual reading</span></article>
+        <article class="metric-card compact"><div class="card-label"><span>Blood oxygen</span><span class="metric-icon water">O</span></div><strong><span data-wellness="spo2">—</span> <small>% SpO₂</small></strong><span class="reading-good">From an oximeter or watch</span></article>
+        <article class="metric-card compact"><div class="card-label"><span>Temperature</span><span class="metric-icon orange">T</span></div><strong><span data-wellness="temperature">—</span> <small>°C</small></strong><span class="reading-good">Manual reading</span></article>
+      </div>
+
+      <div class="wellness-layout">
+        <form class="panel wellness-form" id="wellness-form">
+          <div class="panel-heading"><div><p class="section-kicker">TODAY</p><h3>Add readings</h3></div></div>
+          <div class="input-grid">
+            <label>Heart rate <span>(bpm)</span><input name="heartRate" type="number" min="20" max="250" step="1" placeholder="72" required></label>
+            <label>Blood pressure <span>(mmHg)</span><input name="bloodPressure" type="text" inputmode="numeric" pattern="[0-9]{2,3}/[0-9]{2,3}" placeholder="118/76" required></label>
+            <label>SpO₂ <span>(%)</span><input name="spo2" type="number" min="50" max="100" step="1" placeholder="98" required></label>
+            <label>Temperature <span>(°C)</span><input name="temperature" type="number" min="30" max="45" step="0.1" placeholder="36.6" required></label>
+          </div>
+          <button class="secondary-button" type="submit">Save wellness readings</button>
+          <p class="form-message" id="wellness-message" aria-live="polite"></p>
+        </form>
+        <aside class="wellness-note">
+          <span class="tip-icon" aria-hidden="true">i</span>
+          <div><strong>Why these are manual</strong><p>Phone motion sensors can estimate movement, but they cannot measure blood oxygen, blood pressure, heart rate, or body temperature.</p></div>
+        </aside>
+      </div>
+      <p class="health-note">This dashboard is for personal tracking only and does not provide medical diagnosis.</p>
+    </section>
+
+    <section class="view" id="today" role="tabpanel" aria-labelledby="today-tab" hidden>
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">TODAY'S SUMMARY</p>
+          <h2>Daily overview</h2>
+          <p>Your combined movement totals and tracking sessions.</p>
+        </div>
+        <button class="outline-button danger" id="reset-day" type="button">Reset today</button>
+      </div>
+
+      <section class="summary-hero">
+        <div class="summary-ring" id="summary-ring"><div><strong data-output="steps">0</strong><span>steps</span></div></div>
+        <div class="summary-copy">
+          <p class="section-kicker">STEP GOAL</p>
+          <h3 id="summary-heading">Start moving toward your goal</h3>
+          <p><span data-output="stepPercentShort">0%</span> of today’s <span data-output="stepGoalValue">10,000</span>-step target.</p>
+          <button class="text-button no-pad" data-open-tracker type="button">Continue tracking →</button>
+        </div>
+      </section>
+
+      <div class="summary-grid">
+        <article><span>Distance</span><strong><span data-output="distance">0.00</span> km</strong></article>
+        <article><span>Estimated calories</span><strong><span data-output="calories">0.0</span> kcal</strong></article>
+        <article><span>Active time</span><strong><span data-output="activeMinutes">0.0</span> min</strong></article>
+        <article><span>Sessions</span><strong data-output="sessionCount">0</strong></article>
+      </div>
+
+      <section class="panel wellness-snapshot">
+        <div class="panel-heading">
+          <div><p class="section-kicker">WELLNESS</p><h3>Today's manual readings</h3></div>
+          <button class="text-button" data-open-wellness type="button">Update readings</button>
+        </div>
+        <div class="snapshot-grid">
+          <span>Heart rate<strong><span data-wellness="heartRate">—</span> bpm</strong></span>
+          <span>Blood pressure<strong><span data-wellness="bloodPressure">—/—</span> mmHg</strong></span>
+          <span>SpO₂<strong><span data-wellness="spo2">—</span>%</strong></span>
+          <span>Temperature<strong><span data-wellness="temperature">—</span> °C</strong></span>
+        </div>
+      </section>
+
+      <section class="panel sessions-panel">
+        <div class="panel-heading">
+          <div><p class="section-kicker">HISTORY</p><h3>Today's sessions</h3></div>
+          <span class="count-badge" data-output="sessionCount">0</span>
+        </div>
+        <ul class="session-list" id="session-list"></ul>
+        <p class="empty-state" id="empty-sessions">No completed sessions yet. Start the tracker and take a walk.</p>
+      </section>
+    </section>
+  </main>
+
+  <script>
+    const STORAGE_KEY = "arCubeMovementTrackerV2";
+
+    const localDateKey = () => {
+      const now = new Date();
+      return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+    };
+
+    const freshState = (settings = {}) => ({
+      date: localDateKey(),
+      steps: 0,
+      activeSeconds: 0,
+      sessions: [],
+      wellness: { heartRate: "—", bloodPressure: "—/—", spo2: "—", temperature: "—", updatedAt: null },
+      settings: { weight: 70, stride: 75, stepGoal: 10000, sensitivity: 1.25, ...settings }
+    });
+
+    function loadState() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+        if (saved?.date === localDateKey()) return { ...freshState(saved.settings), ...saved };
+        return freshState(saved?.settings);
+      } catch {
+        return freshState();
+      }
+    }
+
+    let state = loadState();
+    let tracking = false;
+    let gravity = 9.81;
+    let peakActive = false;
+    let lastStepAt = 0;
+    let lastMovementAt = 0;
+    let motionEventCount = 0;
+    let currentSession = null;
+    let activeTimer = null;
+    let saveTimer = null;
+
+    const saveState = () => localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    const distanceKm = () => state.steps * Number(state.settings.stride) / 100000;
+    const calories = () => distanceKm() * Number(state.settings.weight) * 0.5;
+    const activeMinutes = () => state.activeSeconds / 60;
+    const stepPercent = () => Math.min(100, state.steps / Number(state.settings.stepGoal) * 100);
+    const formatNumber = value => Number(value).toLocaleString();
+
+    function updateOutputs() {
+      const outputs = {
+        steps: formatNumber(state.steps),
+        distance: distanceKm().toFixed(2),
+        calories: calories().toFixed(1),
+        activeMinutes: activeMinutes().toFixed(1),
+        stepPercent: `${Math.round(stepPercent())}% complete`,
+        stepPercentShort: `${Math.round(stepPercent())}%`,
+        stepGoal: `Goal ${formatNumber(state.settings.stepGoal)}`,
+        stepGoalValue: formatNumber(state.settings.stepGoal),
+        sessionCount: state.sessions.length
+      };
+      Object.entries(outputs).forEach(([key, value]) => {
+        document.querySelectorAll(`[data-output="${key}"]`).forEach(node => node.textContent = value);
+      });
+
+      document.querySelector("[data-progress='steps']").style.width = `${stepPercent()}%`;
+      document.getElementById("summary-ring").style.setProperty("--progress", `${stepPercent() * 3.6}deg`);
+      document.getElementById("summary-heading").textContent = state.steps >= state.settings.stepGoal ? "Daily step goal reached" : state.steps ? "Keep going — you are making progress" : "Start moving toward your goal";
+
+      const list = document.getElementById("session-list");
+      list.innerHTML = "";
+      state.sessions.forEach(session => {
+        const item = document.createElement("li");
+        const title = document.createElement("strong");
+        const details = document.createElement("span");
+        title.textContent = `${formatNumber(session.steps)} estimated steps`;
+        details.textContent = `${session.time} · ${(session.activeSeconds / 60).toFixed(1)} active min`;
+        item.append(title, details);
+        list.appendChild(item);
+      });
+      document.getElementById("empty-sessions").hidden = state.sessions.length > 0;
+
+      Object.entries(state.wellness).forEach(([key, value]) => {
+        document.querySelectorAll(`[data-wellness="${key}"]`).forEach(node => node.textContent = value);
+      });
+      document.getElementById("wellness-updated").textContent = state.wellness.updatedAt ? `Updated ${state.wellness.updatedAt}` : "Not checked today";
+
+      const form = document.getElementById("settings-form");
+      Object.entries(state.settings).forEach(([key, value]) => { if (form.elements[key]) form.elements[key].value = value; });
+    }
+
+    function queueSave() {
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(saveState, 600);
+    }
+
+    function registerStep() {
+      state.steps += 1;
+      currentSession.steps += 1;
+      lastMovementAt = Date.now();
+      updateOutputs();
+      queueSave();
+    }
+
+    function handleMotion(event) {
+      motionEventCount += 1;
+      const direct = event.acceleration;
+      let motion = 0;
+
+      if (direct && direct.x != null && direct.y != null && direct.z != null) {
+        motion = Math.hypot(direct.x, direct.y, direct.z);
+      } else {
+        const acceleration = event.accelerationIncludingGravity;
+        if (!acceleration || acceleration.x == null) return;
+        const magnitude = Math.hypot(acceleration.x, acceleration.y, acceleration.z);
+        gravity = gravity * 0.9 + magnitude * 0.1;
+        motion = Math.abs(magnitude - gravity);
+      }
+
+      const threshold = Number(state.settings.sensitivity);
+      const now = performance.now();
+      document.getElementById("signal-value").textContent = motion.toFixed(2);
+      document.getElementById("motion-signal").style.width = `${Math.min(100, motion / 4 * 100)}%`;
+
+      if (motion > threshold && !peakActive && now - lastStepAt > 300) {
+        lastStepAt = now;
+        registerStep();
+      }
+      peakActive = motion > threshold * 0.55;
+    }
+
+    async function startTracking() {
+      if (!("DeviceMotionEvent" in window)) {
+        showTrackerMessage("This device or browser does not provide motion sensor data.", true);
+        return;
+      }
+      if (!window.isSecureContext && location.hostname !== "localhost" && location.hostname !== "127.0.0.1") {
+        showTrackerMessage("Motion tracking requires HTTPS. Open the deployed GitHub Pages address.", true);
+        return;
+      }
+
+      try {
+        if (typeof DeviceMotionEvent.requestPermission === "function") {
+          const permission = await DeviceMotionEvent.requestPermission();
+          if (permission !== "granted") {
+            showTrackerMessage("Motion permission was not granted. Allow it in browser settings and try again.", true);
+            return;
+          }
+        }
+
+        tracking = true;
+        motionEventCount = 0;
+        currentSession = { steps: 0, activeSeconds: 0, startedAt: Date.now() };
+        window.addEventListener("devicemotion", handleMotion);
+        document.getElementById("start-tracking").disabled = true;
+        document.getElementById("stop-tracking").disabled = false;
+        document.getElementById("tracker-state").classList.add("is-running");
+        document.getElementById("tracker-state").lastChild.textContent = "Running";
+        document.getElementById("day-status").lastElementChild.textContent = "Tracking movement";
+        document.querySelector(".plain-counter").classList.add("is-running");
+        showTrackerMessage("Tracking is active. Walk naturally with your phone in a pocket or hand.");
+
+        activeTimer = setInterval(() => {
+          if (tracking && Date.now() - lastMovementAt < 3000) {
+            state.activeSeconds += 1;
+            currentSession.activeSeconds += 1;
+            updateOutputs();
+            queueSave();
+          }
+        }, 1000);
+
+        setTimeout(() => {
+          if (tracking && motionEventCount === 0) showTrackerMessage("No sensor data received. Check motion permission or try another mobile browser.", true);
+        }, 3500);
+      } catch {
+        showTrackerMessage("Motion access could not be started. Check the browser permission and try again.", true);
+      }
+    }
+
+    function stopTracking(pageHidden = false) {
+      if (!tracking) return;
+      tracking = false;
+      window.removeEventListener("devicemotion", handleMotion);
+      clearInterval(activeTimer);
+      if (currentSession && (currentSession.steps > 0 || currentSession.activeSeconds > 0)) {
+        state.sessions.unshift({
+          steps: currentSession.steps,
+          activeSeconds: currentSession.activeSeconds,
+          time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+        });
+      }
+      currentSession = null;
+      saveState();
+      updateOutputs();
+      document.getElementById("start-tracking").disabled = false;
+      document.getElementById("stop-tracking").disabled = true;
+      document.getElementById("tracker-state").classList.remove("is-running");
+      document.getElementById("tracker-state").lastChild.textContent = "Stopped";
+      document.getElementById("day-status").lastElementChild.textContent = "Ready to move";
+      document.querySelector(".plain-counter").classList.remove("is-running");
+      document.getElementById("motion-signal").style.width = "0%";
+      showTrackerMessage(pageHidden ? "Tracking stopped because the page was hidden." : "Session saved in today's summary.");
+    }
+
+    function showTrackerMessage(message, isError = false) {
+      const node = document.getElementById("tracker-message");
+      node.textContent = message;
+      node.classList.toggle("is-error", isError);
+    }
+
+    function openTab(tabName) {
+      document.querySelectorAll(".tab").forEach(tab => {
+        const active = tab.dataset.tab === tabName;
+        tab.classList.toggle("is-active", active);
+        tab.setAttribute("aria-selected", String(active));
+      });
+      document.querySelectorAll(".view").forEach(view => {
+        const active = view.id === tabName;
+        view.classList.toggle("is-active", active);
+        view.hidden = !active;
+      });
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    document.querySelectorAll(".tab").forEach(tab => tab.addEventListener("click", () => openTab(tab.dataset.tab)));
+    document.querySelectorAll("[data-open-tracker]").forEach(button => button.addEventListener("click", () => openTab("tracker")));
+    document.querySelectorAll("[data-open-wellness]").forEach(button => button.addEventListener("click", () => openTab("wellness")));
+    document.getElementById("start-tracking").addEventListener("click", startTracking);
+    document.getElementById("stop-tracking").addEventListener("click", () => stopTracking());
+    document.addEventListener("visibilitychange", () => { if (document.hidden) stopTracking(true); });
+
+    document.getElementById("settings-form").addEventListener("submit", event => {
+      event.preventDefault();
+      const data = new FormData(event.currentTarget);
+      state.settings = {
+        weight: Number(data.get("weight")), stride: Number(data.get("stride")),
+        stepGoal: Number(data.get("stepGoal")), sensitivity: Number(data.get("sensitivity"))
+      };
+      saveState();
+      updateOutputs();
+      showTrackerMessage("Settings saved. Calorie and distance estimates were recalculated.");
+    });
+
+    document.getElementById("wellness-form").addEventListener("submit", event => {
+      event.preventDefault();
+      const data = new FormData(event.currentTarget);
+      state.wellness = {
+        heartRate: String(data.get("heartRate")),
+        bloodPressure: String(data.get("bloodPressure")).trim(),
+        spo2: String(data.get("spo2")),
+        temperature: String(data.get("temperature")),
+        updatedAt: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+      };
+      saveState();
+      updateOutputs();
+      document.getElementById("wellness-message").textContent = "Wellness readings saved for today.";
+    });
+
+    document.getElementById("reset-day").addEventListener("click", () => {
+      if (!confirm("Reset all of today's steps, active time, and sessions?")) return;
+      stopTracking();
+      state = freshState(state.settings);
+      saveState();
+      updateOutputs();
+      document.getElementById("day-status").lastElementChild.textContent = "Ready to move";
+    });
+
+    function updateDateLabel() {
+      const today = new Intl.DateTimeFormat("en", { weekday: "long", day: "numeric", month: "long", year: "numeric" }).format(new Date());
+      document.getElementById("date-line").textContent = `${today} · Estimates from this phone's movement.`;
+    }
+
+    setInterval(() => {
+      if (state.date !== localDateKey()) {
+        stopTracking();
+        state = freshState(state.settings);
+        saveState();
+        updateOutputs();
+        updateDateLabel();
+      }
+    }, 60000);
+
+    updateDateLabel();
+    updateOutputs();
+    saveState();
+    const requestedTab = new URLSearchParams(location.search).get("tab");
+    if (["activity", "tracker", "wellness", "today"].includes(requestedTab)) openTab(requestedTab);
+    window.addEventListener("load", () => setTimeout(() => document.getElementById("splash").classList.add("is-hidden"), 1050));
+  </script>
+  <footer class="site-footer">Janken Corporations<sup>™</sup></footer>
+</body>
+</html>
