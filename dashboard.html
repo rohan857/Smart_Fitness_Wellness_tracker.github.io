@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f4f5f0">
+  <title>AR Move — Daily Activity Tracker</title>
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="experience.css">
+</head>
+<body>
+  <a class="skip-link" href="#activity">Skip to content</a>
+  <aside class="brand-rail" aria-label="AR Move"><a href="?tab=activity" class="rail-logo"><span class="brand-mark">m<span>↗</span></span><span>AR<span class="brand-light">move</span><small>MAKE ROOM FOR MOVEMENT</small></span></a><div class="rail-note"><span class="rail-orbit" aria-hidden="true">↗</span><strong>Small steps.<br>Stronger days.</strong><p>Your own pace.<br>Your own space.</p></div><div class="rail-foot"><span class="local-dot"></span> Local & personal <small>Janken Corporations™</small></div></aside>
+  <div class="splash" id="splash" aria-label="AR Cube loading screen">
+    <picture>
+      <source media="(max-width: 620px)" srcset="assets/JCM.png">
+      <img src="assets/JC.png" alt="Janken Corporations">
+    </picture>
+  </div>
+
+  <main class="app-shell">
+    <p id="storage-warning" class="storage-warning" role="alert" hidden>Your browser could not save data. Keep this page open and export your records before closing it.</p>
+    <div id="recovery-warning" class="storage-warning" role="alert" hidden>Some saved records could not be read. A fresh day has been opened; download the original records for recovery. <button id="download-recovery" class="text-button" type="button">Download original records</button><button id="dismiss-recovery" class="text-button" type="button">Dismiss</button></div>
+    <header class="topbar">
+      <div class="brand-copy">
+        <p class="eyebrow">YOUR EVERYDAY MOVEMENT COMPANION</p>
+        <h1>Make today a moving day<span class="accent-period">.</span></h1>
+        <p class="date-line" id="date-line"></p>
+      </div>
+      <div class="header-tools"><button class="icon-button" id="theme-toggle" type="button" aria-label="Switch color theme" title="Switch color theme">◐</button><button class="outline-button" id="install-app" type="button" hidden>Install app</button><div class="status-pill" id="day-status"><span class="status-dot"></span><span>Ready to move</span></div></div>
+    </header>
+
+    <nav class="tabs" aria-label="Tracker sections" role="tablist">
+      <button class="tab is-active" id="activity-tab" data-tab="activity" type="button" role="tab" aria-selected="true" aria-controls="activity"><span aria-hidden="true">▦</span> Overview</button>
+      <button class="tab" id="tracker-tab" data-tab="tracker" type="button" role="tab" aria-selected="false" aria-controls="tracker"><span aria-hidden="true">⌁</span> Tracker</button>
+      <button class="tab" id="sports-tab" data-tab="sports" type="button" role="tab" aria-selected="false" aria-controls="sports"><span aria-hidden="true">↗</span> Sports</button>
+      <button class="tab" id="wellness-tab" data-tab="wellness" type="button" role="tab" aria-selected="false" aria-controls="wellness"><span aria-hidden="true">♡</span> Wellness</button>
+      <button class="tab" id="today-tab" data-tab="today" type="button" role="tab" aria-selected="false" aria-controls="today"><span aria-hidden="true">▥</span> Progress</button>
+    </nav>
+
+    <section class="view is-active" id="activity" role="tabpanel" aria-labelledby="activity-tab">
+      <div class="overview-hero"><div><span class="hero-label"><span></span> EVERY MOVE COUNTS</span><h2>A little better,<br>one day at a time.</h2><p>Walk, work out, check in. Build a routine that feels like you.</p><button class="lime-button" data-tab-link="sports" type="button">Find your next workout <span aria-hidden="true">↗</span></button></div><div class="hero-orbit" aria-hidden="true"><div class="orbit-path"></div><svg viewBox="0 0 240 240"><circle cx="143" cy="45" r="17"/><path d="M130 78 L108 124 L155 144 L184 199 M109 125 L73 169 L30 178 M130 79 L173 96 L209 68 M130 79 L90 70 L57 28"/></svg><span class="orbit-label">GO AT YOUR OWN PACE</span><span class="orbit-spark">✳</span></div></div>
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">LIVE DAILY TOTALS</p>
+          <h2>Your activity</h2>
+          <p>Your walking totals, from motion estimates and manual entries.</p>
+        </div>
+        <span class="date-badge">Resets daily</span>
+      </div>
+
+      <div class="metric-grid fitness-grid">
+        <article class="metric-card">
+          <div class="card-label"><span>Estimated steps</span><span class="metric-icon water">S</span></div>
+          <strong><span data-output="steps">0</span></strong>
+          <div class="progress"><span data-progress="steps"></span></div>
+          <div class="card-meta"><span data-output="stepPercent">0% complete</span><span data-output="stepGoal">Goal 10,000</span></div>
+        </article>
+        <article class="metric-card">
+          <div class="card-label"><span>Distance</span><span class="metric-icon blue">D</span></div>
+          <strong><span data-output="distance">0.00</span> <small>km</small></strong>
+          <span class="reading-good">Based on stride length</span>
+        </article>
+        <article class="metric-card">
+          <div class="card-label"><span>Calories</span><span class="metric-icon coral">K</span></div>
+          <strong><span data-output="calories">0.0</span> <small>kcal</small></strong>
+          <span class="reading-good">Estimated from weight and distance</span>
+        </article>
+        <article class="metric-card">
+          <div class="card-label"><span>Active time</span><span class="metric-icon green">A</span></div>
+          <strong><span data-output="activeMinutes">0.0</span> <small>min</small></strong>
+          <span class="reading-good">Time with detected movement</span>
+        </article>
+      </div>
+
+      <div class="tip-strip">
+        <span class="tip-icon" aria-hidden="true">i</span>
+        <p><strong>Phone placement matters</strong><br>Keep the phone in a pocket or hand while walking for better estimates.</p>
+        <button class="text-button" data-open-tracker type="button">Open tracker</button>
+      </div>
+      <div class="overview-grid"><section class="panel week-panel"><div class="panel-heading"><div><p class="section-kicker">CONSISTENCY OVER PERFECTION</p><h3>This week in motion</h3></div><span class="subtle-pill" id="active-days">0 active days</span></div><div id="week-chart" class="week-chart" role="img" aria-label="Steps over the last seven days"></div><p class="chart-caption">Walking steps · last 7 calendar days</p></section><section class="panel daily-focus"><p class="section-kicker">TODAY'S FOCUS</p><h3 id="focus-heading">Make your first move</h3><p id="focus-copy">Pick an exercise or start a walk. Every entry builds your story.</p><div class="goal-line"><span>Workout time</span><strong id="workout-goal-label">0 / 20 min</strong></div><div class="progress"><span id="workout-goal-bar"></span></div><div id="milestone-list" class="milestone-list"></div><button class="text-button" data-tab-link="today" type="button">See your progress →</button></section></div>
+      <div class="quick-actions"><button data-open-tracker type="button"><span>⌁</span><strong>Take a walk</strong><small>Open motion tracker</small><b>↗</b></button><button data-tab-link="sports" type="button"><span>↗</span><strong>Move at home</strong><small>Explore your exercises</small><b>↗</b></button><button data-open-wellness type="button"><span>♡</span><strong>Check in</strong><small>Water, mood & wellness</small><b>↗</b></button></div>
+    </section>
+
+    <section class="view" id="tracker" role="tabpanel" aria-labelledby="tracker-tab" hidden>
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">MOTION SENSOR</p>
+          <h2>Movement tracker</h2>
+          <p>Tap Start, allow motion access, and keep this page visible.</p>
+        </div>
+        <span class="updated-label tracker-state" id="tracker-state"><span class="tracker-dot"></span>Stopped</span>
+      </div>
+
+      <div class="tracker-layout">
+        <section class="panel tracker-panel">
+          <div class="plain-counter">
+            <span>Estimated steps today</span>
+            <strong data-output="steps">0</strong>
+            <small>Keep this page open while walking</small>
+          </div>
+
+          <div class="signal-block">
+            <div class="signal-label"><span>Movement signal</span><span id="signal-value">0.00</span></div>
+            <div class="signal-track"><span id="motion-signal"></span></div>
+          </div>
+
+          <div class="tracker-actions">
+            <button class="primary-button" id="start-tracking" type="button">Start tracking</button>
+            <button class="outline-button" id="stop-tracking" type="button" disabled>Stop</button>
+          </div>
+          <p class="tracker-message" id="tracker-message" aria-live="polite">Motion access starts only after you press the button.</p>
+        </section>
+
+        <form class="panel settings-panel" id="settings-form">
+          <div class="panel-heading">
+            <div><p class="section-kicker">ESTIMATE SETTINGS</p><h3>Your details</h3></div>
+          </div>
+          <div class="settings-grid">
+            <label>Body weight <span>(kg)</span><input name="weight" type="number" min="25" max="250" step="0.1" required></label>
+            <label>Stride length <span>(cm)</span><input name="stride" type="number" min="30" max="150" step="1" required></label>
+            <label>Daily step goal<input name="stepGoal" type="number" min="100" max="100000" step="100" required></label>
+            <label>Sensitivity
+              <select name="sensitivity">
+                <option value="1.05">High</option>
+                <option value="1.25">Balanced</option>
+                <option value="1.50">Low</option>
+              </select>
+            </label>
+          </div>
+          <button class="secondary-button" type="submit">Save settings</button>
+          <p class="settings-note">Higher sensitivity detects lighter movement but may count more false steps. Your details stay on this device.</p>
+        </form>
+      </div>
+
+      <div class="browser-note">
+        <strong>Browser limitation:</strong> tracking pauses if this page is hidden, the browser is closed, or the screen is locked. Results are estimates, not medical or fitness-device measurements.
+      </div>
+      <form class="panel manual-walk-panel" id="manual-walk-form"><div class="panel-heading"><div><p class="section-kicker">MISSED A WALK?</p><h3>Add walking manually</h3></div><span class="subtle-pill">Manual entry</span></div><p class="history-note">Add only the steps this app did not already count.</p><div class="settings-grid"><label>Steps to add<input name="steps" type="number" min="1" max="100000" step="1" required placeholder="e.g. 1500"></label><label>Active minutes<input name="minutes" type="number" min="0" max="1440" step="0.1" required value="0"></label></div><button class="secondary-button" type="submit">Add walking entry</button><p class="form-message" id="manual-walk-message" role="status"></p></form>
+    </section>
+
+    <section class="view" id="sports" role="tabpanel" aria-labelledby="sports-tab" hidden>
+      <div class="section-heading">
+        <div><p class="section-kicker">YOUR SPACE. YOUR PACE.</p><h2>Home workout club</h2><p>Build a small routine, move with a timer, and record what you complete.</p></div>
+        <span class="date-badge">No gym needed</span>
+      </div>
+      <div class="sports-banner">
+        <div><span class="sport-tag">SPORTS MODE</span><h3>A little movement goes a long way.</h3><p>Choose an exercise below. Try hand-motion counting for arm movements, or use the timer and enter your reps yourself.</p><a class="sport-link" href="#workout-library">Explore exercises <span aria-hidden="true">↘</span></a></div>
+        <div class="sports-art" aria-hidden="true"><span>MOVE</span><svg viewBox="0 0 200 200"><circle cx="116" cy="35" r="15"/><path d="M105 65 L87 107 L128 127 L151 169 M90 107 L60 146 L28 151 M103 69 L140 85 L172 61 M104 69 L70 63 L44 30"/></svg></div>
+      </div>
+      <div class="workout-stats" aria-label="Today's workout totals">
+        <div><strong id="workout-count">0</strong><span>workouts today</span></div><div><strong id="workout-minutes">0</strong><span>workout minutes</span></div><div><strong id="workout-reps">0</strong><span>logged reps</span></div>
+      </div>
+      <section class="routine-presets"><div class="library-heading"><div><p class="section-kicker">A STARTING POINT</p><h3>Make a routine your own</h3></div><span class="history-note">Example plans · fully editable</span></div><div class="preset-grid"><button type="button" data-preset="mobility"><span>01 / RESET</span><strong>Desk break</strong><small>Shoulders · arms · seated stretch</small><b>Load plan ↗</b></button><button type="button" data-preset="strength"><span>02 / BUILD</span><strong>Home basics</strong><small>Chair · wall · standing movements</small><b>Load plan ↗</b></button><button type="button" data-preset="mixed"><span>03 / MOVE</span><strong>A little of everything</strong><small>March · arms · gentle mobility</small><b>Load plan ↗</b></button></div></section>
+      <section class="panel circuit-panel" id="circuit-panel"><div class="panel-heading"><div><p class="section-kicker">FOLLOW YOUR PLAN</p><h3>Guided interval session</h3></div><span class="subtle-pill">Timer only · hands free</span></div><div class="circuit-idle" id="circuit-idle"><p>Play your plan in order, with work and rest intervals. Only time actually completed is logged. Adjust the pace to suit you.</p><div class="circuit-settings"><label>Work <span>(seconds)</span><input id="circuit-work" type="number" min="10" max="600" step="1" value="30" required></label><label>Rest <span>(seconds)</span><input id="circuit-rest" type="number" min="0" max="300" step="1" value="15" required></label><label>Rounds<input id="circuit-rounds" type="number" min="1" max="10" step="1" value="1" required></label></div><div class="circuit-launch"><button class="primary-button" id="circuit-start" type="button">Start my plan</button><span id="circuit-estimate">Add an exercise to your plan to begin.</span></div></div><div id="circuit-live" hidden><div class="circuit-stage"><span id="circuit-phase">GET READY</span><h4 id="circuit-name">Your session</h4><strong id="circuit-countdown">00:30</strong><p id="circuit-position"></p><div class="progress"><span id="circuit-progress"></span></div><p id="circuit-next"></p></div><div class="circuit-controls"><button class="primary-button" id="circuit-pause" type="button">Pause session</button><button class="outline-button" id="circuit-skip" type="button">Next interval</button><button class="outline-button danger" id="circuit-finish" type="button">Finish & review</button></div></div><p id="circuit-message" class="form-message" role="status"></p></section>
+      <div class="sports-layout">
+        <div>
+          <div class="library-heading" id="workout-library"><div><p class="section-kicker">PICK YOUR MOVEMENT</p><h3>At-home exercises</h3></div><button class="outline-button" id="custom-exercise-open" type="button">+ Custom</button></div><div class="library-tools"><label class="search-label"><span class="sr-only">Search exercises</span><input id="exercise-search" type="search" placeholder="Search your next movement…"></label><label class="filter-label"><span class="sr-only">Filter exercises</span><select id="workout-filter"><option value="all">All exercises</option><option value="favorites">Favorites</option><option value="motion">Hand motion</option><option value="strength">Strength</option><option value="mobility">Mobility</option><option value="cardio">Cardio</option><option value="custom">My exercises</option></select></label></div><p class="empty-state" id="library-empty" hidden>No exercises match. Try a different search or filter.</p>
+          <div class="exercise-grid" id="exercise-grid"></div>
+          <section class="panel plan-panel"><div class="panel-heading"><div><p class="section-kicker">MAKE IT YOURS</p><h3>My workout plan</h3></div><span class="count-badge" id="plan-count">0</span></div><ul class="plan-list" id="workout-plan"></ul><p class="empty-state" id="plan-empty">Add exercises from the cards to build your routine.</p><button class="text-button" id="plan-clear" type="button">Clear plan</button></section>
+        </div>
+        <section class="panel workout-console" id="workout-console" aria-labelledby="selected-workout-name">
+          <p class="section-kicker">WORKOUT TRACKER</p><h3 id="selected-workout-name">Choose your first exercise</h3>
+          <p class="console-description" id="selected-workout-description">Select an exercise to see its instructions and tracking options.</p>
+          <form id="workout-form" hidden>
+            <p id="draft-restored" class="draft-banner" role="status" hidden>Recovered your unsaved entry. Review it or resume when ready.</p>
+            <div id="exercise-demo" class="exercise-demo" aria-hidden="true"></div>
+            <ol id="workout-instructions" class="instruction-list"></ol>
+            <label>Tracking method<select id="workout-method"><option value="timer">Timer + manual reps</option><option value="motion">Experimental hand motion</option><option value="manual">Manual entry</option></select></label>
+            <p class="method-note" id="workout-method-note"></p>
+            <div class="workout-live" aria-live="off"><div><strong id="workout-clock">00:00</strong><span>elapsed time</span></div><div><strong id="workout-live-reps">0</strong><span>estimated movements</span></div></div>
+            <div class="signal-block"><div class="signal-label"><span>Hand movement signal</span><span id="workout-signal-value">0.00</span></div><div class="signal-track"><span id="workout-signal"></span></div></div>
+            <div class="workout-controls"><button class="primary-button" id="workout-start" type="button">Start workout</button><button class="outline-button" id="workout-pause" type="button" disabled>Pause</button></div>
+            <div class="rep-adjust"><button type="button" id="rep-minus" aria-label="Remove one rep">−</button><span>Manual rep counter</span><button type="button" id="rep-plus" aria-label="Add one rep">+</button></div>
+            <p class="tracker-message" id="workout-message" role="status">Ready when you are.</p>
+            <div class="review-heading"><strong>Review before saving</strong><span>Edit any estimate</span></div>
+            <div class="settings-grid workout-fields"><label>Total reps<input id="workout-rep-input" type="number" min="0" max="10000" step="1" value="0" required></label><label>Sets completed<input id="workout-set-input" type="number" min="1" max="100" step="1" value="1" required></label><label class="full-width">Total minutes<input id="workout-minute-input" type="number" min="0" max="1440" step="0.1" value="0" required></label></div>
+            <label>Note <span>(optional)</span><input id="workout-note" maxlength="160" placeholder="How did it feel?"></label>
+            <button class="secondary-button save-workout" type="submit">Save completed workout</button>
+            <button class="text-button discard-workout" id="workout-discard" type="button">Clear this entry</button>
+          </form>
+        </section>
+      </div>
+      <div class="browser-note"><strong>About hand-motion counting:</strong> this counts acceleration peaks, not verified exercise repetitions. It cannot check form or identify exercises. Hold the phone securely for gentle arm movements only; keep your hands free for floor exercises. Tracking pauses when the page is hidden. You can always use manual entry.</div>
+      <section class="panel workout-history-panel"><div class="panel-heading"><div><p class="section-kicker">TODAY'S EFFORT</p><h3>Completed workouts</h3></div></div><ul class="session-list" id="completed-workouts"></ul><p class="empty-state" id="workouts-empty">Your completed workouts will appear here.</p></section>
+    </section>
+
+    <section class="view" id="wellness" role="tabpanel" aria-labelledby="wellness-tab" hidden>
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">MANUAL HEALTH CHECK-IN</p>
+          <h2>Wellness</h2>
+          <p>Record readings from a watch, oximeter, thermometer, or blood-pressure monitor.</p>
+        </div>
+        <span class="updated-label" id="wellness-updated">Not checked today</span>
+      </div>
+      <div class="habit-grid"><section class="panel hydration-panel"><div class="panel-heading"><div><p class="section-kicker">A LITTLE REFRESH</p><h3>Water check-in</h3></div><span class="habit-icon" aria-hidden="true">◡</span></div><div class="water-reading"><strong id="water-total">0</strong><span>ml logged</span></div><div class="progress"><span id="water-progress"></span></div><div class="goal-line"><span id="water-goal-label">Personal target: 2,000 ml</span><button class="text-button" id="water-undo" type="button">Undo last</button></div><div class="water-buttons"><button type="button" data-water="150">+150 ml</button><button type="button" data-water="250">+250 ml</button><button type="button" data-water="500">+500 ml</button></div><p class="history-note">A personal logging target, not a hydration recommendation.</p></section><section class="panel mood-panel"><p class="section-kicker">HOW'S YOUR DAY?</p><h3>Check in with yourself</h3><p class="history-note">Pick what fits. There's no right answer.</p><div class="mood-options" role="group" aria-label="Today's mood"><button data-mood="low" type="button" aria-pressed="false"><span>☁</span>Low</button><button data-mood="okay" type="button" aria-pressed="false"><span>◡</span>Okay</button><button data-mood="good" type="button" aria-pressed="false"><span>☀</span>Good</button><button data-mood="great" type="button" aria-pressed="false"><span>✳</span>Great</button></div><label>One line about today<input id="mood-note" maxlength="160" placeholder="A small win, a thought, anything."></label><button id="save-mood" type="button" class="secondary-button">Save check-in</button></section></div>
+
+      <div class="metric-grid wellness-grid">
+        <article class="metric-card compact"><div class="card-label"><span>Heart rate</span><span class="metric-icon coral">H</span></div><strong><span data-wellness="heartRate">—</span> <small>bpm</small></strong><span class="reading-good">Manual reading</span></article>
+        <article class="metric-card compact"><div class="card-label"><span>Blood pressure</span><span class="metric-icon blue">B</span></div><strong><span data-wellness="bloodPressure">—/—</span> <small>mmHg</small></strong><span class="reading-good">Manual reading</span></article>
+        <article class="metric-card compact"><div class="card-label"><span>Blood oxygen</span><span class="metric-icon water">O</span></div><strong><span data-wellness="spo2">—</span> <small>% SpO₂</small></strong><span class="reading-good">From an oximeter or watch</span></article>
+        <article class="metric-card compact"><div class="card-label"><span>Temperature</span><span class="metric-icon orange">T</span></div><strong><span data-wellness="temperature">—</span> <small>°C</small></strong><span class="reading-good">Manual reading</span></article>
+        <article class="metric-card compact"><div class="card-label"><span>Sleep</span><span class="metric-icon navy">S</span></div><strong><span data-wellness="sleep">—</span> <small>hours</small></strong><span class="reading-good">Manual daily entry</span></article>
+      </div>
+
+      <div class="wellness-layout">
+        <form class="panel wellness-form" id="wellness-form">
+          <div class="panel-heading"><div><p class="section-kicker">TODAY</p><h3>Add readings</h3></div></div>
+          <div class="input-grid">
+            <label>Heart rate <span>(bpm)</span><input name="heartRate" type="number" min="20" max="250" step="1" placeholder="72" required></label>
+            <label>Blood pressure <span>(mmHg)</span><input name="bloodPressure" type="text" inputmode="numeric" pattern="[0-9]{2,3}/[0-9]{2,3}" placeholder="118/76" required></label>
+            <label>SpO₂ <span>(%)</span><input name="spo2" type="number" min="50" max="100" step="1" placeholder="98" required></label>
+            <label>Temperature <span>(°C)</span><input name="temperature" type="number" min="30" max="45" step="0.1" placeholder="36.6" required></label>
+            <label>Sleep <span>(hours)</span><input name="sleep" type="number" min="0" max="24" step="0.1" placeholder="7.5" required></label>
+          </div>
+          <button class="secondary-button" type="submit">Save wellness readings</button>
+          <p class="form-message" id="wellness-message" aria-live="polite"></p>
+        </form>
+        <aside class="wellness-note">
+          <span class="tip-icon" aria-hidden="true">i</span>
+          <div><strong>Why these are manual</strong><p>Phone motion sensors can estimate movement, but they cannot measure these health readings. Enter sleep from a watch or your own daily record.</p></div>
+        </aside>
+      </div>
+      <p class="health-note">This dashboard is for personal tracking only and does not provide medical diagnosis.</p>
+    </section>
+
+    <section class="view" id="today" role="tabpanel" aria-labelledby="today-tab" hidden>
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">TODAY'S SUMMARY</p>
+          <h2>Look how far you've come</h2>
+          <p>Your combined movement totals and tracking sessions.</p>
+        </div>
+        <button class="outline-button danger" id="reset-day" type="button">Reset today</button>
+      </div>
+      <section class="panel progress-panel"><div class="panel-heading"><div><p class="section-kicker">YOUR OWN BENCHMARK</p><h3>Progress over time</h3></div><label><span class="sr-only">Progress range</span><select id="progress-range"><option value="7">Last 7 days</option><option value="30">Last 30 days</option></select></label></div><div class="progress-totals"><div><strong id="progress-steps">0</strong><span>steps logged</span></div><div><strong id="progress-workouts">0</strong><span>workouts</span></div><div><strong id="progress-minutes">0</strong><span>workout minutes</span></div><div><strong id="progress-streak">0</strong><span>day movement streak</span></div></div><div class="chart-metric-switch" role="group" aria-label="Chart measurement"><button type="button" data-chart-metric="steps" aria-pressed="true">Walking steps</button><button type="button" data-chart-metric="minutes" aria-pressed="false">Workout minutes</button></div><div class="trend-chart" id="trend-chart" role="img" aria-label="Your activity history"></div><div class="chart-caption" id="trend-caption"></div><details class="chart-table"><summary>View daily numbers</summary><div class="table-scroll"><table><thead><tr><th scope="col">Date</th><th scope="col">Steps</th><th scope="col">Workouts</th><th scope="col">Workout min</th><th scope="col">Water ml</th></tr></thead><tbody id="progress-table"></tbody></table></div></details></section>
+
+      <section class="summary-hero">
+        <div class="summary-ring" id="summary-ring"><div><strong data-output="steps">0</strong><span>steps</span></div></div>
+        <div class="summary-copy">
+          <p class="section-kicker">STEP GOAL</p>
+          <h3 id="summary-heading">Start moving toward your goal</h3>
+          <p><span data-output="stepPercentShort">0%</span> of today’s <span data-output="stepGoalValue">10,000</span>-step target.</p>
+          <button class="text-button no-pad" data-open-tracker type="button">Continue tracking →</button>
+        </div>
+      </section>
+
+      <div class="summary-grid">
+        <article><span>Distance</span><strong><span data-output="distance">0.00</span> km</strong></article>
+        <article><span>Estimated calories</span><strong><span data-output="calories">0.0</span> kcal</strong></article>
+        <article><span>Active time</span><strong><span data-output="activeMinutes">0.0</span> min</strong></article>
+        <article><span>Sessions</span><strong data-output="sessionCount">0</strong></article>
+      </div>
+
+      <section class="panel wellness-snapshot">
+        <div class="panel-heading">
+          <div><p class="section-kicker">WELLNESS</p><h3>Today's manual readings</h3></div>
+          <button class="text-button" data-open-wellness type="button">Update readings</button>
+        </div>
+        <div class="snapshot-grid">
+          <span>Heart rate<strong><span data-wellness="heartRate">—</span> bpm</strong></span>
+          <span>Blood pressure<strong><span data-wellness="bloodPressure">—/—</span> mmHg</strong></span>
+          <span>SpO₂<strong><span data-wellness="spo2">—</span>%</strong></span>
+          <span>Temperature<strong><span data-wellness="temperature">—</span> °C</strong></span>
+          <span>Sleep<strong><span data-wellness="sleep">—</span> hours</strong></span>
+        </div>
+      </section>
+
+      <section class="panel sessions-panel">
+        <div class="panel-heading">
+          <div><p class="section-kicker">HISTORY</p><h3>Today's sessions</h3></div>
+          <span class="count-badge" data-output="sessionCount">0</span>
+        </div>
+        <ul class="session-list" id="session-list"></ul>
+        <p class="empty-state" id="empty-sessions">No completed sessions yet. Start the tracker and take a walk.</p>
+      </section>
+      <section class="panel daily-history-panel"><div class="panel-heading"><div><p class="section-kicker">KEEP YOUR PROGRESS</p><h3>Recent days</h3></div><button class="text-button" id="export-data" type="button">Export records</button></div><p class="history-note">Previous days are kept for 30 days on this browser. Export includes today's completed workouts and wellness readings.</p><ul class="session-list" id="daily-history"></ul><p class="empty-state" id="history-empty">Your previous days will appear here after the daily reset.</p><div class="today-workouts"><span>Workouts today</span><strong id="today-workout-summary">0 workouts · 0 min</strong><button class="text-button" data-tab-link="sports" type="button">Open Sports →</button></div></section>
+      <div class="settings-bottom"><form class="panel" id="preferences-form"><p class="section-kicker">YOUR GOALS, YOUR CHOICE</p><h3>Personal targets</h3><div class="settings-grid"><label>Workout minutes / day<input name="workoutGoal" type="number" min="1" max="300" step="1" value="20" required></label><label>Water target <span>(ml)</span><input name="waterGoal" type="number" min="100" max="10000" step="50" value="2000" required></label></div><button class="secondary-button" type="submit">Save personal targets</button><p class="history-note">These targets only organize your records. Choose values that suit your circumstances.</p></form><section class="panel data-tools"><p class="section-kicker">TAKE YOUR DATA WITH YOU</p><h3>Backups & downloads</h3><p class="history-note">Saved only in this browser. Download a backup before clearing browser data or moving devices.</p><button id="export-csv" class="outline-button" type="button">Download daily CSV</button><label class="import-label">Restore JSON backup<input id="import-data" type="file" accept="application/json,.json"></label><p id="import-message" class="form-message" role="status"></p><p class="history-note">Restore replaces saved records after validation and confirmation. Exports contain personal wellness data.</p><p class="connection-state" id="connection-state">Available on this device</p></section></div>
+    </section>
+  </main>
+  <dialog id="custom-exercise-dialog" class="app-dialog"><form id="custom-exercise-form"><div class="panel-heading"><div><p class="section-kicker">MAKE IT PERSONAL</p><h3>Create your exercise</h3></div><button type="button" class="icon-button" data-close-dialog aria-label="Close dialog">×</button></div><p class="history-note">Custom exercises use timer or manual entry. Give yourself a clear, familiar instruction.</p><label>Exercise name<input name="name" maxlength="60" required placeholder="e.g. My mobility break"></label><label>Category<select name="group"><option value="mobility">Mobility</option><option value="strength">Strength</option><option value="cardio">Cardio</option></select></label><label>Instructions<textarea name="instructions" maxlength="600" required rows="4" placeholder="One instruction per line"></textarea></label><button class="secondary-button" type="submit">Create & add to plan</button><p class="form-message" id="custom-exercise-message" role="status"></p></form></dialog>
+  <dialog id="workout-edit-dialog" class="app-dialog"><form id="workout-edit-form"><div class="panel-heading"><h3>Edit workout</h3><button type="button" class="icon-button" data-close-dialog aria-label="Close dialog">×</button></div><input type="hidden" name="id"><label>Workout<input name="name" maxlength="60" required></label><div class="settings-grid"><label>Total reps<input name="reps" type="number" min="0" max="10000" step="1" required></label><label>Sets<input name="sets" type="number" min="1" max="100" step="1" required></label></div><label>Minutes<input name="minutes" type="number" min="0" max="1440" step="0.01" required></label><label>Note<input name="note" maxlength="160"></label><button type="submit" class="secondary-button">Save changes</button><p class="form-message" id="edit-message" role="status"></p></form></dialog>
+  <dialog id="circuit-review-dialog" class="app-dialog"><form id="circuit-review-form"><div class="panel-heading"><div><p class="section-kicker">SESSION COMPLETE</p><h3>A little effort, recorded.</h3></div></div><p class="history-note">Review the time completed for each exercise. Rest is excluded. Enter reps only if you counted them yourself.</p><div id="circuit-review-rows"></div><div class="dialog-actions"><button class="secondary-button" type="submit">Save session workouts</button><button class="outline-button" id="circuit-discard" type="button">Discard session</button></div><p class="form-message" id="circuit-review-message" role="status"></p></form></dialog>
+  <div id="toast" class="toast" role="status" hidden></div>
+
+  <script src="app.js" defer></script>
+  <script src="features.js" defer></script>
+  <footer class="site-footer">Janken Corporations<sup>™</sup></footer>
+</body>
+</html>

@@ -131,8 +131,8 @@ h3 { margin-bottom: 0; font-size: 18px; }
 
 .tabs {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  width: min(100%, 620px);
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  width: min(100%, 740px);
   gap: 6px;
   padding: 5px;
   margin-bottom: 34px;
@@ -392,6 +392,78 @@ button:disabled { cursor: not-allowed; opacity: .48; transform: none !important;
 }
 .site-footer sup { margin-left: 2px; font-size: 7px; }
 
+/* Sports mode */
+.storage-warning { padding: 14px 18px; border: 1px solid #e4bc73; border-radius: 10px; background: #fff4db; color: #69471d; font-size: 13px; }
+.sports-banner { display: grid; grid-template-columns: minmax(0, 1fr) 240px; align-items: center; gap: 30px; padding: 32px 36px; border-radius: 16px; background: #123e42; color: #fff; overflow: hidden; }
+.sport-tag { display: inline-block; margin-bottom: 16px; font-size: 10px; letter-spacing: 2px; color: #a4e8c9; font-weight: 800; }
+.sports-banner h3 { margin: 0 0 12px; max-width: 470px; font-size: clamp(26px, 3vw, 36px); line-height: 1.13; letter-spacing: -.7px; }
+.sports-banner p { max-width: 520px; margin-bottom: 18px; color: #c6dfe0; font-size: 14px; }
+.sport-link { display: inline-flex; align-items: center; gap: 24px; padding: 10px 15px; border-radius: 8px; background: #b8edb0; color: #173c34; font-size: 13px; font-weight: 800; text-decoration: none; }
+.sport-link:focus-visible { outline: 3px solid white; outline-offset: 4px; }
+.sports-art { position: relative; display: grid; place-items: center; height: 210px; background: #205556; border: 1px solid #3c7270; border-radius: 50%; }
+.sports-art > span { position: absolute; bottom: 20px; font-size: 35px; font-weight: 900; letter-spacing: 8px; color: #43817b; }
+.sports-art svg { width: 175px; height: 175px; z-index: 1; fill: #b8edb0; stroke: #b8edb0; stroke-width: 12; stroke-linecap: round; stroke-linejoin: round; }
+.sports-art svg path { fill: none; }
+.workout-stats { display: grid; grid-template-columns: repeat(3, 1fr); margin: 18px 0 30px; background: #fff; border: 1px solid var(--line); border-radius: 12px; }
+.workout-stats > div { display: flex; align-items: baseline; justify-content: center; gap: 10px; padding: 19px 12px; }
+.workout-stats > div + div { border-left: 1px solid var(--line); }
+.workout-stats strong { color: var(--selected-deep); font-size: 27px; letter-spacing: -.7px; }
+.workout-stats span { color: var(--muted); font-size: 12px; }
+.sports-layout { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(310px, .85fr); gap: 22px; align-items: start; }
+.library-heading { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 16px; scroll-margin-top: 70px; }
+.filter-label { display: flex; gap: 8px; align-items: center; }
+.filter-label select { width: 140px; min-height: 36px; margin: 0; padding: 7px; font-size: 12px; }
+.exercise-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.exercise-card { display: flex; flex-direction: column; padding: 18px; border: 1px solid var(--line); border-radius: 12px; background: #fff; transition: border-color .2s ease; }
+.exercise-card.is-selected { border-color: var(--selected-deep); box-shadow: 0 0 0 1px var(--selected-deep); }
+.exercise-top { display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-bottom: 16px; }
+.exercise-icon { display: grid; place-items: center; width: 35px; height: 35px; border-radius: 9px; color: #2c7065; background: #e6f3ed; font-size: 23px; }
+.exercise-badge { padding: 4px 6px; background: #edf3f7; color: #4a6776; border-radius: 5px; font-size: 10px; font-weight: 750; }
+.motion-badge { background: #e7f5df; color: #3a6b30; }
+.exercise-card h4 { margin: 0 0 8px; font-size: 16px; letter-spacing: -.25px; }
+.exercise-card p { flex: 1; margin-bottom: 15px; color: var(--muted); font-size: 12px; }
+.exercise-target { display: block; margin-bottom: 15px; color: #56736c; font-size: 11px; }
+.exercise-actions { display: flex; gap: 7px; }
+.exercise-actions button { min-height: 36px; padding: 7px 9px; border-radius: 7px; font-size: 11px; font-weight: 800; cursor: pointer; }
+.choose-exercise { flex: 1; border: 1px solid #b9d6ce; color: #205a4d; background: #edf7f1; }
+.choose-exercise:hover { background: #d6eddf; }
+.add-exercise { border: 1px solid #d6e4e5; color: #45616a; background: #fff; }
+.add-exercise:hover { background: #f0f7f7; }
+.plan-panel { margin-top: 18px; }
+.plan-list { list-style: none; padding: 0; margin: 0; }
+.plan-list li { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 0; border-top: 1px solid #e3edef; }
+.plan-choose { min-height: 36px; text-align: left; color: var(--ink); font-size: 13px; font-weight: 700; background: transparent; border: none; cursor: pointer; }
+.plan-choose:hover { color: var(--cyan-deep); }
+.workout-console { position: sticky; top: 18px; scroll-margin-top: 75px; }
+.workout-console.is-running { border-color: #7cbaa5; }
+.console-description { margin: 10px 0 16px; color: var(--muted); font-size: 13px; }
+.instruction-list { margin: 0 0 20px; padding-left: 19px; color: #506a71; font-size: 12px; }
+.instruction-list li + li { margin-top: 8px; }
+.method-note { margin: 10px 0 16px; font-size: 11px; color: var(--muted); }
+.workout-live { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 19px 10px; margin-bottom: 18px; background: #eef7f3; border-radius: 10px; text-align: center; }
+.workout-live strong { display: block; font-size: 29px; color: #205c4e; font-variant-numeric: tabular-nums; }
+.workout-live span { color: var(--muted); font-size: 10px; }
+.workout-controls { display: grid; grid-template-columns: 1fr auto; gap: 8px; }
+.workout-console .tracker-message { font-size: 11px; }
+.review-heading { display: flex; justify-content: space-between; gap: 8px; margin: 20px 0 12px; padding-top: 15px; border-top: 1px solid var(--line); font-size: 12px; }
+.review-heading span { color: var(--muted); font-size: 10px; }
+.full-width { grid-column: 1 / -1; }
+.save-workout { margin-top: 18px; }
+.discard-workout { display: block; margin: 8px auto 0; font-size: 11px; }
+.workout-history-panel, .daily-history-panel { margin-top: 18px; }
+.workout-history-panel .session-list li { flex-wrap: wrap; }
+.workout-history-panel .session-list small { flex-basis: 100%; color: var(--muted); overflow-wrap: anywhere; }
+.history-note { color: var(--muted); font-size: 12px; }
+.today-workouts { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; padding-top: 18px; margin-top: 18px; border-top: 1px solid var(--line); font-size: 13px; }
+.today-workouts > span { color: var(--muted); }
+.today-workouts .text-button { margin-left: auto; }
+
+@media (max-width: 1050px) {
+  .sports-layout { grid-template-columns: minmax(0, 1fr) minmax(300px, .9fr); gap: 16px; }
+  .exercise-grid { grid-template-columns: 1fr; }
+  .workout-stats > div { flex-direction: column; align-items: center; gap: 2px; }
+}
+
 @media (max-width: 920px) {
   .app-shell { width: min(calc(100% - 32px), 760px); padding-top: 28px; }
   .metric-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -401,6 +473,11 @@ button:disabled { cursor: not-allowed; opacity: .48; transform: none !important;
   .wellness-layout { grid-template-columns: 1fr; }
   .summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .snapshot-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sports-layout { grid-template-columns: 1fr; }
+  .exercise-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .workout-console { position: static; }
+  .sports-banner { grid-template-columns: 1fr 170px; padding: 26px; gap: 20px; }
+  .sports-art { height: 170px; }
 }
 
 @media (max-width: 620px) {
@@ -430,6 +507,20 @@ button:disabled { cursor: not-allowed; opacity: .48; transform: none !important;
   .splash { gap: 14px; }
   .splash picture { width: 100vw; max-width: 100vw; }
   .splash img { width: 100%; height: auto; max-height: none; object-fit: contain; }
+  .tab { font-size: 12px; }
+  .sports-banner { grid-template-columns: 1fr; padding: 24px; }
+  .sports-art { display: none; }
+  .workout-stats { margin-bottom: 24px; }
+  .workout-stats span { font-size: 10px; }
+  .workout-stats strong { font-size: 24px; }
+  .exercise-grid { grid-template-columns: 1fr; }
+  .workout-fields { grid-template-columns: 1fr 1fr; }
+  .workout-controls .outline-button { width: auto; }
+  .library-heading h3 { font-size: 17px; }
+  .filter-label { font-size: 0; }
+  .filter-label select { width: 125px; }
+  .plan-list .text-button { margin-left: 0; }
+  .workout-history-panel .session-list li { align-items: stretch; }
 }
 
 @media (orientation: landscape) and (max-height: 540px) {

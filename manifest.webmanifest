@@ -1,0 +1,12 @@
+{
+  "id": "./",
+  "name": "AR Move — Fitness & Wellness",
+  "short_name": "AR Move",
+  "description": "Home workouts, walking estimates, and personal wellness check-ins.",
+  "start_url": "./dashboard.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4f5f0",
+  "theme_color": "#253e32",
+  "icons": [{ "src": "assets/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}

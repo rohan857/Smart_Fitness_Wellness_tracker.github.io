@@ -7,7 +7,7 @@ Only Python's standard library is used.
 
 from __future__ import annotations
 
-import contextlib
+import argparse
 import socket
 import threading
 import webbrowser
@@ -18,7 +18,7 @@ from pathlib import Path
 
 PROJECT_DIR = Path(__file__).resolve().parent
 SERVER_ROOT = PROJECT_DIR
-START_PAGE = "/index.html"
+START_PAGE = "/dashboard.html"
 
 
 class QuietRequestHandler(SimpleHTTPRequestHandler):
@@ -28,26 +28,36 @@ class QuietRequestHandler(SimpleHTTPRequestHandler):
         return
 
 
-def available_port(preferred: int = 8000) -> int:
-    """Use port 8000 when available, otherwise ask Windows for a free port."""
+class LocalHTTPServer(ThreadingHTTPServer):
+    """Keep Windows from silently sharing a port with another running server."""
 
-    with contextlib.closing(socket.socket(socket.AF_INET, socket.SOCK_STREAM)) as probe:
-        try:
-            probe.bind(("127.0.0.1", preferred))
-        except OSError:
-            probe.bind(("127.0.0.1", 0))
-        return int(probe.getsockname()[1])
+    allow_reuse_address = False
+
+    def server_bind(self) -> None:
+        if hasattr(socket, "SO_EXCLUSIVEADDRUSE"):
+            self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_EXCLUSIVEADDRUSE, 1)
+        super().server_bind()
 
 
 def main() -> None:
-    port = available_port()
+    parser = argparse.ArgumentParser(description="Run AR Move locally.")
+    parser.add_argument("--port", type=int, default=8000, help="Local port (default: 8000). Keep the same port to keep the same browser records.")
+    parser.add_argument("--no-browser", action="store_true", help="Start the server without opening a browser.")
+    options = parser.parse_args()
+    if not 1 <= options.port <= 65535:
+        parser.error("Port must be between 1 and 65535.")
+    port = options.port
     handler = partial(QuietRequestHandler, directory=str(SERVER_ROOT))
-    server = ThreadingHTTPServer(("127.0.0.1", port), handler)
+    try:
+        server = LocalHTTPServer(("127.0.0.1", port), handler)
+    except OSError as error:
+        parser.exit(1, f"Could not open port {port}: {error}\nClose the other server, or choose --port 8001. A different port uses different browser storage.\n")
     url = f"http://127.0.0.1:{port}{START_PAGE}"
 
     print(f"AR Move activity tracker: {url}")
     print("Press Ctrl+C to stop the app.")
-    threading.Timer(0.35, lambda: webbrowser.open(url)).start()
+    if not options.no_browser:
+        threading.Timer(0.35, lambda: webbrowser.open(url)).start()
 
     try:
         server.serve_forever()
